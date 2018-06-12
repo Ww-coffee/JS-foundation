@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="function.js"></script>
+</head>
+<body>
+	<input type="text" id="t1" placeholder="请输入正确的QQ号"></input><span id="sp"></span>
+	<br>
+	<input type="button" id="bt1" value="提交"></input>
+</body>
+<script type="text/javascript">
+	getId('bt1').onclick = function(){
+		var str = getId('t1').value;
+		var reg = /\D/gi;
+
+		//可以添加/^$/ 限定不能以0开头
+		var reg1 = /[1-9]\d{4,10}/gi;//如果要限定数字范围就要写^和&  来给定参考范围
+
+		//定一个空数组来接收查分后的str值
+		var sum = [];
+		for(var i=1;i<=11;i++){
+			var s = str.substring(0,i);
+		}
+		sum += s;
+
+
+		 if(!reg.exec(str)){
+		 	if(reg1.test(str)){
+		 		//判断获取的号码第一位是否为0
+		 		if(sum[0] != 0){
+		 			//获取ajax对象
+					var xhr = new XMLHttpRequest();
+					//监听状态变化
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState == 4){
+							if(xhr.responseText == 1){
+								getId('sp').innerHTML = '<font color="red">用户名已被占用</font>';
+							}else{
+								getId('sp').innerHTML = '<font color="green">用户名可以用</font>';
+							}
+						}
+					}	
+					//打开连接
+					xhr.open('get','1.php?name='+str);
+					//发送连接
+					xhr.send();
+		 		}else{
+		 			getId('sp').innerHTML = '<font color="red">不能以0开头</font>';	
+		 		}
+		 	}else{
+		 		getId('sp').innerHTML = '<font color="red">×</font>';	
+		 	}					
+		 }else{
+			getId('sp').innerHTML = '<font color="red">×</font>';	
+			}
+		
+		
+	}
+</script>
+</html>
